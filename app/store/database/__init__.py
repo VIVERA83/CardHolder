@@ -1,0 +1,1 @@
+from card.models import *

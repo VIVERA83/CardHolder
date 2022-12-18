@@ -1,6 +1,8 @@
-from fastapi import Request
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
+from app.core.helpers import Request
+
+from icecream import ic
 
 card_route = InferringRouter()
 
@@ -11,5 +13,6 @@ class Card:
         "/test/",
         description="Тестовый API"
     )
-    def get_test(self):
+    async def get_test(self, request: "Request"):
+        ic(await request.app.store.card.create_cards(1, 2))
         return {"test": "ok"}
