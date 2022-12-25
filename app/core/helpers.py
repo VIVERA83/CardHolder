@@ -1,8 +1,11 @@
 from typing import Optional
-from fastapi import FastAPI, Request as FastAPIRequest
-from store.database.database import Database
+
+from fastapi import FastAPI
+from fastapi import Request as FastAPIRequest
+
 from core.settings import Settings
 from store import Store
+from store.database.database import Database
 
 
 class Application(FastAPI):

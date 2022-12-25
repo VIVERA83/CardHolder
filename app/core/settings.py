@@ -1,5 +1,6 @@
 import os
-from pydantic import BaseSettings, BaseModel
+
+from pydantic import BaseModel, BaseSettings
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__name__)))
 

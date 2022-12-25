@@ -7,4 +7,3 @@ if TYPE_CHECKING:
 
 def setup_logging(app: "Application") -> None:
     logging.basicConfig(level=app.settings.logging.level)
-

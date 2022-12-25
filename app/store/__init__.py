@@ -9,6 +9,7 @@ if TYPE_CHECKING:
 class Store:
     def __init__(self, app: "Application"):
         from store.card.accessor import CardAccessor
+
         self.card = CardAccessor(app)
 
 

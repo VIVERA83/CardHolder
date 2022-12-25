@@ -5,5 +5,6 @@ if TYPE_CHECKING:
 
 
 def setup_routes(app: "Application"):
-    from card.api.v1.card import card_route
+    from card.views import card_route
+
     app.include_router(card_route)
