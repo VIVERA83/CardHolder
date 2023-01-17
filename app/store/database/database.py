@@ -1,4 +1,4 @@
-import logging
+from logging import getLogger
 from typing import TYPE_CHECKING, Optional
 
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine
@@ -13,6 +13,7 @@ if TYPE_CHECKING:
 class Database:
     def __init__(self, app: "Application"):
         self.app = app
+        self.logger = getLogger("Database")
         self.engine: Optional[AsyncEngine] = None
         self.db: Optional[declarative_base] = None
         self.session: Optional[AsyncSession] = None
@@ -27,9 +28,9 @@ class Database:
             expire_on_commit=False,
             class_=AsyncSession,
         )
-        logging.info("Postgres is connected")
+        self.logger.info("Postgres is connected")
 
     async def disconnect(self, *_: list, **__: dict) -> None:
         if self.engine:
             await self.engine.dispose()
-        logging.info("Postgres is disconnected")
+        self.logger.info("Postgres is disconnected")

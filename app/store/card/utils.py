@@ -1,9 +1,11 @@
-from typing import Any
-from sqlalchemy.sql.selectable import Select
-from sqlalchemy.sql.elements import BinaryExpression
-from card.models import CardModel
-from sqlalchemy import and_, select
 from datetime import datetime, time
+from typing import Any
+
+from sqlalchemy import and_, select
+from sqlalchemy.sql.elements import BinaryExpression
+from sqlalchemy.sql.selectable import Select
+
+from card.models import CardModel
 
 
 def get_comparisons(
@@ -19,6 +21,7 @@ def get_comparisons(
 
 def get_query(**kwargs) -> Select:
     query = select(
+        CardModel.id,
         CardModel.series,
         CardModel.number,
         CardModel.create_data,

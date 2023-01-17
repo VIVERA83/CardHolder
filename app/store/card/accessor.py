@@ -1,5 +1,5 @@
-from functools import wraps
 from datetime import datetime
+from functools import wraps
 from uuid import UUID
 
 from sqlalchemy import and_, delete, insert, select, update
@@ -8,6 +8,7 @@ from sqlalchemy.orm import selectinload
 
 from base.base_accessor import BaseAccessor
 from card.models import CardModel, CardTransactionsModel, DurationEnum, StatusCardEnum
+
 from .utils import get_comparisons, get_query
 
 
@@ -22,7 +23,7 @@ class CardAccessor(BaseAccessor):
                     "id_card",
                     "series",
                     "number",
-                    "create_data",
+                    "create_date",
                     "expire_date",
                     "status",
                 ],
@@ -68,6 +69,7 @@ class CardAccessor(BaseAccessor):
                 .returning(CardModel)
             )
             result: CursorResult = await session.execute(query)
+            self.logger.info(f" Create {result.unique().rowcount} cards")
         return [i._asdict() for i in result.unique().all()]  # noqa
 
     @_card_expiration
@@ -148,7 +150,8 @@ class CardAccessor(BaseAccessor):
                 .where(CardModel.id == id_card)
             )
             result = await session.execute(query)
-            return result.unique().first()
+
+            return result.unique().scalars().first()
 
     async def delete_card(
         self,

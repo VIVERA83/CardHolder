@@ -13,7 +13,7 @@ from store.database.sqlalchemy_base import db
 class StatusCardEnum(enum.Enum):
     not_active: str = "not_active"
     active: str = "active"
-    expired: str = "expire_data"
+    expired: str = "expired"
 
 
 class DurationEnum(enum.Enum):

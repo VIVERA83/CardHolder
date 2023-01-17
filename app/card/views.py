@@ -1,3 +1,4 @@
+from datetime import date
 from typing import Optional
 from uuid import UUID
 
@@ -5,13 +6,24 @@ from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
 
 from card.models import StatusCardEnum
+from card.query_params import (
+    query_create_date,
+    query_expire_date,
+    query_id,
+    query_number,
+    query_page_number,
+    query_page_size,
+    query_series,
+    query_status,
+)
 from card.schemes import (
     CardSchema,
     CardShortSchema,
     CardTransactionsSchema,
     CreateCardSchema,
-    SearchSchema,
+    DurationEnumStr,
 )
+from card.utils import get_annotations_to_str
 from core.helpers import Request
 
 card_route = InferringRouter()
@@ -22,8 +34,10 @@ class Card:
     @card_route.post(
         "/create_cards/",
         summary="Генерация карт",
-        description="Генерация карт, в соответствии с указанной серией - `series` и  количеством - `count`",
+        description=f"Генерация карт, в соответствии с указанной серией - `series` и  количеством "
+        f"- `count`\n сроком действия - `duration` : {get_annotations_to_str(DurationEnumStr)}",
         response_description="Список карт",
+        tags=["POST"],
     )
     async def create_cards(
         self,
@@ -35,40 +49,11 @@ class Card:
         )
 
     @card_route.post(
-        "/search/",
-        summary="Поиск карт",
-        description="Поиск карты по параметрам",
-        response_description="Список карт",
-    )
-    async def search(
-        self, request: "Request", search_params: SearchSchema
-    ) -> list[CardShortSchema]:
-        return await request.app.store.card.get_cards(
-            series=search_params.series,
-            number=search_params.number,
-            create_data=search_params.create_data,
-            expire_date=search_params.expire_date,
-            status=search_params.status,
-            page_number=search_params.page_number,
-            page_size=search_params.page_size,
-        )
-
-    @card_route.get(
-        "/get_card/",
-        summary="Данные по карте",
-        description="Профиль карты, с историей операций",
-        response_description="Детальная информация по карте",
-    )
-    async def get_card(
-        self, request: "Request", series: int, number: int
-    ) -> Optional[CardSchema]:
-        return await request.app.store.card.get_card(series=series, number=number)
-
-    @card_route.post(
         "/create_transaction/",
         summary="Создать операцию по карте",
         description="Провести операцию по карте",
         response_description="Детальная информация по проведенной операции",
+        tags=["POST"],
     )
     async def create_transaction(
         self, request: "Request", id_card: UUID, amount: float
@@ -82,6 +67,7 @@ class Card:
         summary="Обновление статуса карты",
         description="Изменение статуса карты",
         response_description="Детальная информация по обновленной карте",
+        tags=["PUT"],
     )
     async def update_card_status(
         self, request: "Request", id_card: UUID, status: StatusCardEnum
@@ -95,8 +81,49 @@ class Card:
         summary="Удалить карту",
         description="Удаление карты и истории операций по карте",
         response_description="Детальная информация по удаленной карте",
+        tags=["DELETE"],
     )
     async def delete_card(
         self, request: "Request", id_card: UUID
     ) -> Optional[CardSchema]:
         return await request.app.store.card.delete_card(id_card=id_card)
+
+    @card_route.get(
+        "/get_card/",
+        summary="Данные по карте",
+        description="Профиль карты, с историей операций",
+        response_description="Детальная информация по карте",
+        tags=["GET"],
+    )
+    async def get_card(
+        self, request: "Request", id_: UUID = query_id
+    ) -> Optional[CardSchema]:
+        return await request.app.store.card.get_card_by_id(id_card=id_)
+
+    @card_route.get(
+        "/get_all/",
+        summary="Список карт",
+        description="Список карт, по умолчанию возвращается 10 первых ",
+        response_description="Список данных по картам, данных по транзакциям ",
+        tags=["GET"],
+    )
+    async def get_all(
+        self,
+        request: "Request",
+        series: Optional[int] = query_series,
+        number: int = query_number,
+        status: StatusCardEnum = query_status,
+        create_date: date = query_create_date,
+        expire_date: date = query_expire_date,
+        page_size: int = query_page_size,
+        page_number: int = query_page_number,
+    ) -> list[CardShortSchema]:
+        return await request.app.store.card.get_cards(
+            series=series,
+            number=number,
+            status=status,
+            create_data=create_date,
+            expire_date=expire_date,
+            page_number=page_number,
+            page_size=page_size,
+        )
