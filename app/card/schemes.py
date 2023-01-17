@@ -85,4 +85,5 @@ class CreateCardSchema(BaseModel):
         description=f"Срок годности карты с момента создания: {get_annotations_to_str(DurationEnumStr)}",
         title="Срок годности",
         example=f"{DurationEnumStr.month.value}",
+
     )
