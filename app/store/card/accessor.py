@@ -9,7 +9,18 @@ from sqlalchemy.orm import selectinload
 from base.base_accessor import BaseAccessor
 from card.models import CardModel, CardTransactionsModel, DurationEnum, StatusCardEnum
 
-from .utils import get_comparisons, get_query
+from .utils import (
+    CREATE_DATE,
+    EXPIRE_DATE,
+    ID,
+    ID_CARD,
+    NUMBER,
+    SERIES,
+    STATUS,
+    TRANSACTION_AMOUNT,
+    get_comparisons,
+    get_query,
+)
 
 
 class CardAccessor(BaseAccessor):
@@ -20,12 +31,12 @@ class CardAccessor(BaseAccessor):
             comparisons = get_comparisons(
                 kwargs,
                 [
-                    "id_card",
-                    "series",
-                    "number",
-                    "create_date",
-                    "expire_date",
-                    "status",
+                    ID,
+                    SERIES,
+                    NUMBER,
+                    CREATE_DATE,
+                    EXPIRE_DATE,
+                    STATUS,
                 ],
             )
             comparisons.append(CardModel.expire_date < datetime.now())  # noqa
@@ -60,8 +71,8 @@ class CardAccessor(BaseAccessor):
                 .values(
                     [
                         {
-                            "series": card.series,
-                            "expire_date": card.expire_date,
+                            SERIES: card.series,
+                            EXPIRE_DATE: card.expire_date,
                         }
                         for card in cards
                     ]
@@ -116,7 +127,7 @@ class CardAccessor(BaseAccessor):
         async with self.app.database.session.begin() as session:
             query = (
                 insert(CardTransactionsModel)
-                .values([{"transaction_amount": amount, "id_card": id_card.hex}])
+                .values([{TRANSACTION_AMOUNT: amount, ID_CARD: id_card.hex}])
                 .returning(CardTransactionsModel)
             )
             result = await session.execute(query)
