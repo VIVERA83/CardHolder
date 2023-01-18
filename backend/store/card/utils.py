@@ -1,11 +1,10 @@
 from datetime import datetime, time
 from typing import Any
 
+from card.models import CardModel, CardTransactionsModel
 from sqlalchemy import and_, select
 from sqlalchemy.sql.elements import BinaryExpression
 from sqlalchemy.sql.selectable import Select
-
-from card.models import CardModel, CardTransactionsModel
 
 # CardModel fields name
 ID = CardModel.id.description

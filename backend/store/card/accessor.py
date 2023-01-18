@@ -2,12 +2,11 @@ from datetime import datetime
 from functools import wraps
 from uuid import UUID
 
+from base.base_accessor import BaseAccessor
+from card.models import CardModel, CardTransactionsModel, DurationEnum, StatusCardEnum
 from sqlalchemy import and_, delete, insert, select, update
 from sqlalchemy.engine import ChunkedIteratorResult, CursorResult
 from sqlalchemy.orm import selectinload
-
-from base.base_accessor import BaseAccessor
-from card.models import CardModel, CardTransactionsModel, DurationEnum, StatusCardEnum
 
 from .utils import (
     CREATE_DATE,

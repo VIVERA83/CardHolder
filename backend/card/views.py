@@ -2,9 +2,6 @@ from datetime import date
 from typing import Optional
 from uuid import UUID
 
-from fastapi_utils.cbv import cbv
-from fastapi_utils.inferring_router import InferringRouter
-
 from card.models import StatusCardEnum
 from card.query_params import (
     query_create_date,
@@ -24,7 +21,9 @@ from card.schemes import (
     DurationEnumStr,
 )
 from card.utils import get_annotations_to_str
-from core.helpers import Request
+from core.components import Request
+from fastapi_utils.cbv import cbv
+from fastapi_utils.inferring_router import InferringRouter
 
 card_route = InferringRouter()
 
@@ -127,3 +126,8 @@ class Card:
             page_number=page_number,
             page_size=page_size,
         )
+
+    @card_route.get("/test")
+    async def test(self):
+        1 / 0
+        return {"status": "test success"}

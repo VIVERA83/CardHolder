@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from core.helpers import Application
+    from core.components import Application
 
 
 def setup_routes(app: "Application"):

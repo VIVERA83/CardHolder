@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from store.database.database import Database
 
 if TYPE_CHECKING:
-    from app.core.app import Application
+    from backend.core.app import Application
 
 
 class Store:

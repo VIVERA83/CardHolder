@@ -1,10 +1,9 @@
 from datetime import datetime
 from uuid import UUID
 
-from fastapi import Query
-
 from card.models import StatusCardEnum
 from card.utils import get_annotations_to_str
+from fastapi import Query
 
 query_id: UUID = Query(
     default=None,

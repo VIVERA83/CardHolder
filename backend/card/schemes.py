@@ -2,8 +2,6 @@ from datetime import datetime
 from enum import Enum
 from uuid import UUID
 
-from pydantic import BaseModel, Field
-
 from card.models import DurationEnum, StatusCardEnum
 from card.query_params import (
     query_create_date,
@@ -14,6 +12,7 @@ from card.query_params import (
     query_status,
 )
 from card.utils import get_annotations_to_str
+from pydantic import BaseModel, Field
 
 
 class BaseCardSchema(BaseModel):
@@ -85,5 +84,4 @@ class CreateCardSchema(BaseModel):
         description=f"Срок годности карты с момента создания: {get_annotations_to_str(DurationEnumStr)}",
         title="Срок годности",
         example=f"{DurationEnumStr.month.value}",
-
     )
