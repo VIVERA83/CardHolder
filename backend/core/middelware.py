@@ -21,7 +21,7 @@ class ErrorHandlingMiddleware(BaseHTTPMiddleware):
             logging.error(traceback.format_exc())
             return JSONResponse(
                 content={
-                    "detail": "Internal error error",
+                    "detail": "Internal server error",
                     "message": "The server is temporarily unavailable try contacting later",
                 },
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

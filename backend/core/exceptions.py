@@ -11,8 +11,9 @@ if TYPE_CHECKING:
 async def http_exception_handler(request: Request, exc: HTTPException):
     return JSONResponse(
         content={
-            "detail": f"{exc.detail}. See the documentation: "
-            f"http://{request.app.settings.host}:{request.app.settings.port}{request.app.docs_url}",
+            "detail": f"{exc.detail}.",
+            "message": f"See the documentation: "
+                       f"http://{request.app.settings.host}:{request.app.settings.port}{request.app.docs_url}",
         },
         status_code=exc.status_code,
     )
