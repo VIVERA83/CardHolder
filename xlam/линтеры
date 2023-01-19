@@ -1,0 +1,3 @@
+pip install flake8
+pip install flake8-bugbear pep8-naming
+pylint --generate-rcfile > .pylintrc  генирация конфига

@@ -24,7 +24,7 @@ class Database:
         """Connect to the database"""
         self.data_base = db
         self.engine = create_async_engine(
-            self.app.settings.postgres.dsn, echo=False, future=True
+            self.app.settings.postgres.dsn, echo=True, future=True
         )
         self.session = sessionmaker(
             self.engine,
