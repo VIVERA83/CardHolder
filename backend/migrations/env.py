@@ -16,7 +16,7 @@ if config.config_file_name is not None:
 
 load_dotenv("../.env")
 target_metadata = db.metadata
-print(Settings().postgres.dsn)
+
 config.set_main_option("sqlalchemy.url", Settings().postgres.dsn)
 
 
