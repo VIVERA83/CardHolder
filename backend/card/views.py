@@ -15,7 +15,6 @@ from card.query_params import (
 )
 from card.schemes import (
     CardSchema,
-    CardShortSchema,
     CardTransactionsSchema,
     CreateCardSchema,
     DurationEnumStr,
@@ -42,7 +41,7 @@ class Card:
         self,
         request: "Request",
         data: CreateCardSchema,
-    ) -> list[CardShortSchema]:
+    ) -> list[CardSchema]:
         return await request.app.store.card.create_cards(
             series=data.series, count=data.count, duration=data.duration.modified()
         )
@@ -70,7 +69,7 @@ class Card:
     )
     async def update_card_status(
         self, request: "Request", id_card: UUID, status: StatusCardEnum
-    ) -> Optional[CardShortSchema]:
+    ) -> Optional[CardSchema]:
         return await request.app.store.card.update_card_status(
             id_card=id_card, status=status
         )
@@ -116,8 +115,8 @@ class Card:
         expire_date: date = query_expire_date,
         page_size: int = query_page_size,
         page_number: int = query_page_number,
-    ) -> list[CardShortSchema]:
-        return await request.app.store.card.get_cards(
+    ) -> list[CardSchema]:
+        return await request.app.store.card.get_all(
             series=series,
             number=number,
             status=status,

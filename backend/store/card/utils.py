@@ -1,3 +1,4 @@
+"""Support function"""
 from datetime import datetime, time
 from typing import Any
 
@@ -25,6 +26,12 @@ PAGE_NUMBER = "page_number"
 def get_comparisons(
     kwargs: dict[str, Any], fields_name: list[str]
 ) -> list[BinaryExpression]:
+    """
+    Generates a list of comparisons for a database query
+    :param kwargs:
+    :param fields_name: The list of fields from the table for which comparisons are formed
+    :return: list of all expressions
+    """
     comparisons = []
     for name, value in kwargs.items():
         if value and name in fields_name:
@@ -34,6 +41,7 @@ def get_comparisons(
 
 
 def get_query(**kwargs) -> Select:
+    """Generates a select for further use in the database query"""
     query = select(
         CardModel.id,
         CardModel.series,

@@ -1,1 +1,2 @@
-from card.models import *
+"""list of Cards models"""
+from card.models import *  # noqa

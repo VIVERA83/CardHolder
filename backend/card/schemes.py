@@ -1,7 +1,6 @@
 from datetime import datetime
 from enum import Enum
 from uuid import UUID
-
 from card.models import DurationEnum, StatusCardEnum
 from card.query_params import (
     query_create_date,
@@ -21,10 +20,6 @@ class BaseCardSchema(BaseModel):
     create_data: datetime = query_create_date
     expire_date: datetime = query_expire_date
     status: StatusCardEnum = query_status
-
-
-class CardShortSchema(BaseCardSchema):
-    id: UUID = query_id
 
 
 class CardTransactionsSchema(BaseModel):

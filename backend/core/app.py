@@ -1,5 +1,3 @@
-import logging
-
 from card.routes import setup_routes
 from core.components import Application
 from core.exceptions import setup_exception

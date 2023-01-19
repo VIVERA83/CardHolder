@@ -55,6 +55,13 @@ class CardAccessor(BaseAccessor):
     async def create_cards(
         self, series: int, count: int, duration: DurationEnum
     ) -> list[dict]:
+        """
+        Create a list of cards.
+        :param series:
+        :param count:
+        :param duration:
+        :return: list of cards
+        """
         cards = [
             CardModel(
                 series=series,
@@ -79,11 +86,11 @@ class CardAccessor(BaseAccessor):
                 .returning(CardModel)
             )
             result: CursorResult = await session.execute(query)
-            self.logger.info(f" Create {result.unique().rowcount} cards")
+            self.logger.info(" Create %s cards", result.unique().rowcount)
         return [i._asdict() for i in result.unique().all()]  # noqa
 
     @_card_expiration
-    async def get_cards(
+    async def get_all(
         self,
         series: int = None,
         number: int = None,
@@ -93,6 +100,9 @@ class CardAccessor(BaseAccessor):
         page_number: int = None,
         page_size: int = None,
     ) -> list[CardModel]:
+        """
+        Returns all cards by request parameters
+        """
         async with self.app.database.session.begin() as session:
             query = get_query(
                 series=series,
@@ -107,22 +117,14 @@ class CardAccessor(BaseAccessor):
             return chang.unique().fetchall()  # noqa
 
     @_card_expiration
-    async def get_card(self, series: int, number: int) -> CardModel:
-        async with self.app.database.session.begin() as session:
-            query = (
-                select(CardModel)
-                .options(selectinload(CardModel.card_transactions))
-                .where(and_(CardModel.series == series, CardModel.number == number))
-            )
-            result: ChunkedIteratorResult = await session.execute(query)
-            return result.scalars().first()
-
-    @_card_expiration
     async def create_transaction(
         self,
         id_card: UUID,
         amount: float,
     ) -> CardTransactionsModel:
+        """
+        Add a transaction record to the card
+        """
         async with self.app.database.session.begin() as session:
             query = (
                 insert(CardTransactionsModel)
@@ -138,6 +140,9 @@ class CardAccessor(BaseAccessor):
         id_card: UUID,
         status: StatusCardEnum,
     ) -> CardModel:
+        """
+        Updating data in the specified map
+        """
         async with self.app.database.session.begin() as session:
             query = (
                 update(CardModel)
@@ -153,6 +158,9 @@ class CardAccessor(BaseAccessor):
         self,
         id_card: UUID,
     ) -> CardModel:
+        """
+        Get Card by id
+        """
         async with self.app.database.session.begin() as session:
             query = (
                 select(CardModel)
@@ -167,6 +175,9 @@ class CardAccessor(BaseAccessor):
         self,
         id_card: UUID,
     ) -> CardModel:
+        """
+        Delete a card
+        """
         async with self.app.database.session.begin() as session:
             query = (
                 delete(CardModel)
