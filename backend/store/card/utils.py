@@ -10,7 +10,7 @@ from sqlalchemy.sql.selectable import Select
 ID = CardModel.id.description
 SERIES = CardModel.series.description  # noqa
 NUMBER = CardModel.number.description  # noqa
-CREATE_DATE = CardModel.create_data.description  # noqa
+CREATE_DATE = CardModel.create_date.description  # noqa
 EXPIRE_DATE = CardModel.expire_date.description  # noqa
 STATUS = CardModel.status.description  # noqa
 
@@ -38,7 +38,7 @@ def get_query(**kwargs) -> Select:
         CardModel.id,
         CardModel.series,
         CardModel.number,
-        CardModel.create_data,
+        CardModel.create_date,
         CardModel.expire_date,
         CardModel.status,
     )
@@ -56,8 +56,8 @@ def get_query(**kwargs) -> Select:
     if date := kwargs.get(CREATE_DATE):
         query = query.filter(
             and_(
-                CardModel.create_data >= datetime.combine(date, time.min),
-                CardModel.create_data <= datetime.combine(date, time.max),
+                CardModel.create_date >= datetime.combine(date, time.min),
+                CardModel.create_date <= datetime.combine(date, time.max),
             )
         )
     if date := kwargs.get(EXPIRE_DATE):

@@ -28,7 +28,7 @@ class CardModel(db):
     id: uuid4 = Column(UUID(as_uuid=True), default=uuid4, unique=True)
     series: int = Column(Integer, primary_key=True)
     number: int = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
-    create_data: datetime = Column(TIMESTAMP, default=datetime.now())
+    create_date: datetime = Column(TIMESTAMP, default=datetime.now())
     expire_date: datetime = Column(
         TIMESTAMP, default=datetime.now() + DurationEnum.month.value
     )

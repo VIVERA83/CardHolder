@@ -121,7 +121,7 @@ class Card:
             series=series,
             number=number,
             status=status,
-            create_data=create_date,
+            create_date=create_date,
             expire_date=expire_date,
             page_number=page_number,
             page_size=page_size,

@@ -87,7 +87,7 @@ class CardAccessor(BaseAccessor):
         self,
         series: int = None,
         number: int = None,
-        create_data: datetime = None,
+        create_date: datetime = None,
         expire_date: datetime = None,
         status: StatusCardEnum = None,
         page_number: int = None,
@@ -97,7 +97,7 @@ class CardAccessor(BaseAccessor):
             query = get_query(
                 series=series,
                 number=number,
-                create_data=create_data,
+                create_date=create_date,
                 expire_date=expire_date,
                 status=status,
                 page_number=page_number,
