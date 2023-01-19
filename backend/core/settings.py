@@ -14,9 +14,6 @@ class Postgres(BaseModel):
 
     @property
     def dsn(self) -> str:
-        print(
-            f"postgresql+asyncpg://{self.user}:{self.password}@{self.host}:{self.port}/{self.db}"
-        )
         return f"postgresql+asyncpg://{self.user}:{self.password}@{self.host}:{self.port}/{self.db}"
 
 
